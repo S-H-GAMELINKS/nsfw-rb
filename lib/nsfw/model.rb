@@ -4,7 +4,7 @@ module NSFW
   class Model
     ROOT_PATH        = Pathname.new(__dir__).parent.parent
     MODEL_PATH       = "#{ROOT_PATH}/vendor/onnx_models/nsfw.onnx"
-    CATEGORIES       = ['hentai', 'neutral', 'porn', 'sexy']
+    CATEGORIES       = ['drawings', 'hentai', 'neutral', 'porn', 'sexy']
     SAFETY_THRESHOLD = 0.9
 
     attr_reader :model
@@ -20,7 +20,8 @@ module NSFW
 
     def safe?(image)
       prediction = predict(image.tensor)
-      prediction["neutral"] >= SAFETY_THRESHOLD
+
+      !(prediction["hentai"]  >= SAFETY_THRESHOLD || prediction["porn"] >= SAFETY_THRESHOLD || prediction["sexy"] >= SAFETY_THRESHOLD)
     end
 
     def loaded?
