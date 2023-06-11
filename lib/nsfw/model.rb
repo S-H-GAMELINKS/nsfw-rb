@@ -4,8 +4,8 @@ module NSFW
   class Model
     ROOT_PATH        = Pathname.new(__dir__).parent.parent
     MODEL_PATH       = "#{ROOT_PATH}/vendor/onnx_models/nsfw.onnx"
-    CATEGORIES       = ['drawings', 'hentai', 'neutral', 'porn', 'sexy']
-    SAFETY_THRESHOLD = 0.85
+    CATEGORIES       = ['hentai', 'neutral', 'porn', 'sexy']
+    SAFETY_THRESHOLD = 0.9
 
     attr_reader :model
 
