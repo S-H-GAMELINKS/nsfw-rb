@@ -12,3 +12,10 @@
 
 # etc
 .DS_Store
+
+# For testing onnx model
+test.rb
+nsfw.jpg
+
+# For building onnx models
+models
