@@ -18,10 +18,21 @@ module NSFW
       format_prediction(prediction)
     end
 
-    def safe?(image)
-      prediction = predict(image.tensor)
+    CATEGORIES.each do |category|
+      define_method "#{category}?" do
+        puts @prediction.inspect
+        @prediction[category] >= SAFETY_THRESHOLD
+      end
+    end
 
-      !(prediction["hentai"]  >= SAFETY_THRESHOLD || prediction["porn"] >= SAFETY_THRESHOLD || prediction["sexy"] >= SAFETY_THRESHOLD)
+    def safe?(image)
+      predict(image.tensor)
+      neutral? || drawings?
+    end
+
+    def unsafe?(image)
+      predict(image.tensor)
+      porn? || hentai? || sexy?
     end
 
     def loaded?
@@ -45,7 +56,7 @@ module NSFW
 
     def format_prediction(prediction)
       results = prediction.fetch("prediction").first
-      CATEGORIES.zip(results).sort{|a,b| b.last - a.last }.to_h
+      @prediction = CATEGORIES.zip(results).sort{|a,b| b.last - a.last }.to_h
     end
   end
 end
