@@ -45,13 +45,44 @@ module NSFW
       @_normalized_pixels ||= normalize_pixels!(pixels)
     end
 
+    def self.neutral?(image_path)
+      img = self.prepare!(image_path)
+      model.predict(img.tensor)
+      model.neutral?
+    end
+    
+    def self.drawings?(image_path)
+      img = self.prepare!(image_path)
+      model.predict(img.tensor)
+      model.drawings?
+    end
+
+    def self.porn?(image_path)
+      img = self.prepare!(image_path)
+      model.predict(img.tensor)
+      model.porn?
+    end
+
+    def self.hentai?(image_path)
+      img = self.prepare!(image_path)
+      model.predict(img.tensor)
+      model.hentai?
+    end
+
+    def self.sexy?(image_path)
+      img = self.prepare!(image_path)
+      model.predict(img.tensor)
+      model.sexy?
+    end
+
     def self.safe?(image_path)
       img = self.prepare!(image_path)
       model.safe?(img)
     end
 
     def self.unsafe?(image_path)
-      !self.safe?(image_path)
+      img = self.prepare!(image_path)
+      model.unsafe?(img)
     end
 
     def self.predictions(image_path)
